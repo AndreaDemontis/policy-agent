@@ -1,0 +1,53 @@
+################################################################################
+################################################################################
+################################################################################
+###                                 SERVER                                   ###
+################################################################################
+################################################################################
+################################################################################
+debug: False
+
+server:
+  # - Server settings
+  #
+  #   All web settings and api parameters, this section does not contains
+  #   any classification settings.
+  #
+  ip: localhost
+  port: 5000
+  ssl: False
+
+  threaded: True
+
+  cors:
+    # - CORS Policy settings
+    #
+    #   Enable CORS only as developement tool, don't use it in production
+    #   make sure your broser have CORS enabled as well.
+    enabled: True
+
+    paths:
+      # - CORS Paths
+      /api/*:
+        origins: '*'
+
+  dialogflow:
+    # - DialogFlow api settings
+    #
+    #   Remember to not share private api keys, maybe it's convinient to use
+    #   a sample config file.
+    service: policy-agent-stytig
+    apikey: apikey.json
+
+  database:
+    # - Caching database settings
+    #
+    #   Make sure to not share private access keys
+    connectionUri: mysql+pymysql://username:password@localhost/policyagent
+
+classificator:
+  # - Classificator settings
+  #
+  #   Here you can find all policy classification parameter, you can tune
+  #   the classificator according to the parameter descriptions below
+  #

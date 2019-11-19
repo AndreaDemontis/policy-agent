@@ -1,0 +1,66 @@
+div.recorder-container
+{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+div.recorder-container > div.line
+{
+    width: 300px;
+    margin-left: 15px;
+    margin-right: 15px;
+    height: 2px;
+    background: #DCDCDC;
+
+}
+
+div.recorder-container > div.button
+{
+    transition: height 0.2s, width 0.2s, border-width 0.2s;
+    height: 80px;
+    width: 80px;
+    border-width: 0px;
+    border: 0px solid #D64D4D;
+
+    border-radius: 40px;
+
+    background-color: #DCDCDC;
+
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+
+    font-size: 40px;
+
+    color: #1A1A1A;
+}
+
+div.recorder-container > div.button:active
+{
+    opacity: 0.3 !important;
+}
+
+div.recorder-container > div.button:hover
+{
+    opacity: 0.8;
+}
+
+div.recorder-container > div.button.active
+{
+    height: 70px;
+    width: 70px;
+    border-width: 5px;
+}
+
+
+div.recorder-container > div.button > svg
+{
+    margin-right: auto;
+    margin-left: auto;
+
+}

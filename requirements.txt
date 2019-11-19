@@ -1,0 +1,17 @@
+flask
+pyyaml
+flask_cors
+flask_restplus
+dialogflow
+google-api-core
+grpcio
+requests
+flask_sqlalchemy
+PyMySQL
+nltk
+pandas
+numpy
+sklearn
+scipy
+datetime
+bs4

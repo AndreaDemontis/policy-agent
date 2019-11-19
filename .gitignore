@@ -1,0 +1,5 @@
+apikey.json
+*/__pycache__
+*.pyc
+.idea/
+*.pkl

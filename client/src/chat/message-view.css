@@ -1,0 +1,197 @@
+div.container
+{
+    overflow-y: auto;
+    padding-right: 40px;
+    height: 100%;
+}
+
+div.message:first-child
+{
+    margin-top: 20px;
+}
+
+div.message
+{
+    position: relative;
+
+    font-size: 23px;
+    font-family: consolas;
+    vertical-align: middle;
+
+    margin-bottom: 40px;
+    max-width: 500px;
+}
+
+div.message > span
+{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+div.message::before
+{
+    position: absolute;
+    margin-top: -55px;
+    top: 15px;
+
+    font-size: 130px;
+    font-weight: bold;
+    font-family: BellMT;
+}
+
+div.message.guest { text-align: right; padding-right: 100px; margin-left: auto; }
+div.message.agent { text-align: left; padding-left: 100px; margin-right: auto; }
+
+div.message.agent::before { content: '“'; left: 0; }
+div.message.guest::before { content: '”'; right: 0; }
+
+div.message.agent.loading
+{
+    color: #666;
+    display: flex;
+    align-items:center;
+}
+
+div.message.agent.loading > img
+{
+    vertical-align: middle;
+    margin-right: 20px;
+}
+
+div.message > div
+{
+    padding: 10px;
+    font-size: 14px;
+    font-family: arial;
+    padding-left: 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: relative;
+    min-height: 60px;
+    padding-bottom: 25px;
+
+    background: rgba(255, 255, 255, 0.1);
+}
+
+div.message > div > span.title
+{
+    padding-left: 10px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-family: arial;
+    text-transform: uppercase;
+}
+
+div.message > div > span.content
+{
+    margin-top: 10px;
+    display: block;
+}
+
+div.message > div > span.title > span.vote
+{
+    margin-left: 5px;
+    font-size: 15px;
+    float: right;
+}
+
+div.message > div > span.title > span.vote > svg
+{
+    margin-right: 7px;
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+div.message > div > svg
+{
+    opacity: 0.3;
+    font-size: 20px;
+}
+
+
+div.message > div > svg:hover
+{
+    opacity: 1;
+    cursor: pointer;
+}
+
+div.message > div > svg:active
+{
+    opacity: 0.5;
+}
+
+div.message > div > div.vote
+{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    right: -60px;
+    top: calc(50% - 37px);
+    font-size: 30px;
+}
+
+div.message > div > div.vote > div
+{
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+div.message > div > div.vote svg[data-color="green"]:hover
+{
+    color: #60BC6C;
+    opacity: 0.7;
+}
+
+div.message > div > div.vote svg[data-color="green"][data-selected="true"]
+{
+    color: #60BC6C;
+    opacity: 1;
+}
+
+div.message > div > div.vote svg[data-color="green"]:active
+{
+    opacity: 0.5;
+}
+
+div.message > div > div.vote svg[data-color="red"]:hover
+{
+    color: #D64D4D;
+    opacity: 0.7;
+}
+
+div.message > div > div.vote svg[data-color="red"][data-selected="true"]
+{
+    color: #D64D4D;
+    opacity: 1;
+}
+
+div.message > div > div.vote svg[data-color="red"]:active
+{
+    opacity: 0.5;
+}
+
+div.message > div > div.vote svg
+{
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+div.message > div > div.confidence
+{
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 12px;
+    opacity: 0.4;
+}
+
+.tooltip
+{
+    background-color: white;
+    color: black;
+    font-size: 15px;
+}

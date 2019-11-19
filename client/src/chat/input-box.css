@@ -1,0 +1,20 @@
+input.input-container
+{
+    background-color: rgba(255, 255, 255, 0.1);
+
+    border-radius: 5px;
+    padding-top: 13px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    outline: none !important;
+    border: none;
+
+    color: #DCDCDC;
+    font-size: 20px;
+    font-family: consolas;
+    text-align: center;
+
+    width: calc(100% - 40px);
+}
