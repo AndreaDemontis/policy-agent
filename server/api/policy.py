@@ -104,7 +104,7 @@ class Policy(Resource):
             # ------------------------------------------------------------------------------------------
             policy_list = ''.join(e.encode('utf-8') + ', ' for e in policy_list)
             policy_list = policy_list[:-2]
-            response = service + " privacy policy has information about the following kind of data: " + policy_list + "."
+            response = service + " privacy policy contains the following kind of data: " + policy_list + "."
 
             return { "fulfillment_text": response, "payload": payload }, 200
 
@@ -171,7 +171,7 @@ class Policy(Resource):
             payload = { "policy": paragraphs }
             # ------------------------------------------------------------------------------------------
 
-            response = "This is the list of all paragraphs that contains " + policy + " policy:"
+            response = "I found " + str(len(paragraphs)) + " paragraphs that contains " + policy + " policy, do you want me to start reading them out loud?"
 
             return { "fulfillment_text": response, "payload": payload }, 200
 
@@ -200,7 +200,7 @@ class Policy(Resource):
                 sub = sub.strip()
                 sub = sub.title()
 
-            response = "I found " + str(paragraphs_count) + " paragraphs about " + policy + ": " + sub + " policies."
+            response = "I found " + str(paragraphs_count) + " paragraphs about " + policy + ": " + sub + " policies. Do you want me to start reading them out loud?"
 
             return { "fulfillment_text": response, "payload": payload }, 200
 
@@ -238,7 +238,7 @@ class Policy(Resource):
                 sub = sub.strip()
                 sub = sub.title()
 
-            response = "This is the list of all paragraphs that contains information on '" + policy + ": " + sub + "' policy:"
+            response = "This is the list of all paragraphs that contains information on '" + policy + ": " + sub + "' policy. Do you want me to start reading them out loud?"
 
             return { "fulfillment_text": response, "payload": payload }, 200
 
@@ -258,6 +258,115 @@ class Policy(Resource):
             response = "You can find the complete policy text following these links: " + link_list
 
             return { "fulfillment_text": response, "payload": payload }, 200
+
+        elif intent == "policy-specification-text-read" or intent == "policy-specification-text2-read":
+
+            ctx = next((i for i, x in enumerate(data["queryResult"]["outputContexts"]) if x["name"].endswith("policy-specification-text-followup")), -1)
+
+            if ctx < 0:
+                ctx = next((i for i, x in enumerate(data["queryResult"]["outputContexts"]) if x["name"].endswith("policy-specification-text2-followup")), -1)
+
+            # - Parameters and context
+            policy = context["policy"].capitalize()
+            service = context["service"].capitalize()
+            try:
+                number = int(context["index"])
+            except:
+                number = -1
+
+            try:
+                if number < 0:
+                    number = int(data["queryResult"]["outputContexts"][ctx]["parameters"]["continue"])
+            except:
+                number = 1
+
+            # - give me the full text (about contact policy)
+            # ------------------------------------------------------------------
+            paragraphs =  db.session.query(DB_Tag_Relation,DB_Paragraph).join(DB_Paragraph).filter(DB_Paragraph.service == service).filter(DB_Tag_Relation.tag == 'Aggregate_' + policy).all()
+
+            texts = [x.Paragraph.text for x in paragraphs]
+
+            # - Check in case of overflow
+            if int(number) > len(texts):
+                return { "fulfillment_text": "This policy tag has only " + str(len(texts)) + " paragraphs.", "payload": {} }, 200
+
+            # - TODO: Move this control to the query:
+            text = texts[int(number) - 1] if number else texts
+            if int(number) < len(texts):
+                text += " Do you want me to read the next one?"
+
+            payload = { "readonly": True } # - To use only in case we wont the chat showing the audio text
+            # ------------------------------------------------------------------------------------------
+
+            response = text
+
+            oldctx = data["queryResult"]["outputContexts"][ctx]
+
+            newctx = \
+            {
+                "name": oldctx["name"],
+                "lifespanCount": 10,
+                "parameters":
+                {
+                    "continue": str(int(number) + 1)
+                }
+            }
+
+            return { "fulfillment_text": response, "payload": payload, "outputContexts": [newctx] }, 200
+
+        elif intent == "policy-specification-subtag-read" or intent == "policy-specification-subtag-paragraphs-read":
+
+            ctx = next((i for i, x in enumerate(data["queryResult"]["outputContexts"]) if x["name"].endswith("policy-specification-text-followup")), -1)
+
+            # - Parameters and context
+            sub = context["sub-policy"].capitalize()
+            policy = context["policy"].capitalize()
+            service = context["service"].capitalize()
+
+            try:
+                number = int(context["index"])
+            except:
+                number = -1
+
+            try:
+                if number < 0:
+                    number = int(data["queryResult"]["outputContexts"][ctx]["parameters"]["continue"])
+            except:
+                number = 1
+
+            # - give me the full text (about contact policy)
+            # ------------------------------------------------------------------
+            paragraphs = db.session.query(DB_Tag_Relation,DB_Paragraph).join(DB_Paragraph).filter(DB_Paragraph.service == service).filter(DB_Tag_Relation.tag == sub).all()
+
+            texts = [x.Paragraph.text for x in paragraphs]
+
+            # - Check in case of overflow
+            if int(number) > len(texts):
+                return { "fulfillment_text": "This policy tag has only " + str(len(texts)) + " paragraphs.", "payload": {} }, 200
+
+            # - TODO: Move this control to the query:
+            text = texts[int(number) - 1] if number else texts
+            if int(number) < len(texts):
+                text += " Do you want me to read the next one?"
+
+            payload = { "readonly": True } # - To use only in case we wont the chat showing the audio text
+            # ------------------------------------------------------------------------------------------
+
+            response = text
+
+            oldctx = data["queryResult"]["outputContexts"][ctx]
+
+            newctx = \
+            {
+                "name": oldctx["name"],
+                "lifespanCount": 10,
+                "parameters":
+                {
+                    "continue": str(int(number) + 1)
+                }
+            }
+
+            return { "fulfillment_text": response, "payload": payload, "outputContexts": [newctx] }, 200
 
         return 404
 
