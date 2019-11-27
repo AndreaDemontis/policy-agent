@@ -63,7 +63,7 @@ in the localhost:5000/ path.
 
 ```bash
 cd client
-npm deploy
+npm run build
 cd ..
 pipenv run python -m server
 ```
