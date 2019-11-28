@@ -15,7 +15,6 @@ import os
 import cPickle
 import nltk
 import re
-import urllib
 import requests
 from datetime import datetime
 
@@ -383,14 +382,13 @@ class Policy(Resource):
         if api_request.status_code == 200:
             for policy_link_name in api_request.json()['links']:
                 policy_url = api_request.json()['links'][policy_link_name]['url']
-                html = urllib.urlopen(policy_url).read()
+                html = requests.get(policy_url).content
                 soup = BeautifulSoup(html, "html.parser")
 
                 for script in soup(["script", "style"]):
                     script.decompose()
 
                 text = soup.get_text()
-
                 # PROCESS PARAGRAPHS
 
                 text_paragraphs = text.split('\n')
